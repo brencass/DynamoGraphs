@@ -1,8 +1,8 @@
 # DynamoGraphs
 
-This respoityory will hopefully help me to have one location for all of my released dynamo graphs/code, this will also have a secondary benefit of better tracking of issues and allow submittion of updates which could be directly submitted updates or information for me to update.
+This repository will hopefully help me to have one location for all of my public released dynamo graphs/code. This will also have a secondary benefit of better tracking of issues and allow submittion of updates which could be directly submitted updates or possible idea or avenue for me to look at.
 
-Generally all of my released dynamo graphs/code have either been done on twitter(https://twitter.com/brencass86) or on the dynamo forum(https://forum.dynamobim.com/).
+Generally all released dynamo graphs/code have either been posted on twitter(https://twitter.com/brencass86) or on the dynamo forum(https://forum.dynamobim.com/).
 
 # Folder Structure
 **To Be Confirmed**
