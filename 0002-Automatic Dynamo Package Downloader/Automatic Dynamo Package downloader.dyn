@@ -1,0 +1,152 @@
+<Workspace Version="1.3.2.2480" X="-26.2219767829855" Y="90.4838482023316" zoom="0.764208420972492" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="1cb577f2-d8e4-4f40-9b14-cbc4427daa5d" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Excel.ReadFromFile" x="836.893278287044" y="407.130044702492" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSOffice.dll" function="DSOffice.Excel.ReadFromFile@var,string,bool">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="True" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <CoreNodeModels.Input.Filename guid="e25a5df3-e42e-4cca-a8a2-e449c2cb1ba4" type="CoreNodeModels.Input.Filename" nickname="Excel File" x="416.619925061894" y="313.498894186475" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <System.String>.\Authorised packages.xlsx</System.String>
+      <HintPath>C:\Users\Brendan\Desktop\Authorised packages.xlsx</HintPath>
+    </CoreNodeModels.Input.Filename>
+    <CoreNodeModels.Input.FileObject guid="b17268e0-b488-49bd-bfa3-34b4c28073ab" type="CoreNodeModels.Input.FileObject" nickname="File.FromPath" x="680.653822093403" y="313.837379251544" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Input.FileObject>
+    <CoreNodeModels.Input.StringInput guid="b2ebf602-87fa-4e0e-b0cf-9878c906b88b" type="CoreNodeModels.Input.StringInput" nickname="Sheet Name" x="556.639183545246" y="440.646062834633" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <System.String>Sheet1</System.String>
+      <System.String value="Sheet1" />
+    </CoreNodeModels.Input.StringInput>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1093.32688810244" y="405.330445507881" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="//Server Location&#xA;Exceldata[2][1];&#xA;&#xA;//Temp Location&#xA;Exceldata[3][1];&#xA;&#xA;//Data&#xA;Exceldata[(5..(List.Count(Exceldata)-1))];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <PythonNodeModels.PythonNode guid="d172e293-65c9-4ca6-82df-bae2e1284dca" type="PythonNodeModels.PythonNode" nickname="Unzip Downloaded Files" x="1815.93487322558" y="434.926120772193" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>#Created By Brendan Cassidy
+#https://github.com/brencass/DynamoGraphs
+
+import clr
+import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+
+import zipfile
+import os
+import shutil
+from time import sleep
+
+sleep(30)
+
+output=[]
+for a in IN[0][1]:
+	ExtractPath=IN[0][0] + a[1]
+	
+	
+	if os.path.isdir(ExtractPath):
+		shutil.rmtree(ExtractPath)
+		
+	zip_ref = zipfile.ZipFile(a[0], 'r')
+	zip_ref.extractall(ExtractPath)
+	zip_ref.close()
+	output.append(a[1])
+
+OUT=output</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="b7553495-d8b3-4ace-b051-043bde5ac5b2" type="PythonNodeModels.PythonNode" nickname="Download Latest Package Files" x="1577.55330777037" y="436.814819667678" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>#Created By Brendan Cassidy
+#https://github.com/brencass/DynamoGraphs
+
+from System.Net import HttpWebRequest,WebRequest,WebResponse
+from System.IO import StreamReader
+from System.IO import File
+
+import clr
+import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import os
+from time import sleep
+
+output=[]
+for a in IN[2]:
+	if a[0] is not None:
+		myHttpWebRequest=WebRequest.Create(a[1])
+		myHttpWebRequest.MaximumAutomaticRedirections=5
+		myHttpWebRequest.AllowAutoRedirect=True
+		myHttpWebRequest.Timeout=120000
+		myHttpWebResponse=myHttpWebRequest.GetResponse()
+		tempstream=myHttpWebResponse.GetResponseStream()
+
+
+		Path=IN[1] + a[0] + ".zip"
+	
+		if os.path.isfile(Path):
+			os.remove(Path)
+	
+		fileCreate= File.Create(Path)
+		tempstream.CopyTo(fileCreate)
+		output.append([Path,a[0]])
+
+sleep(30)
+
+OUT=[IN[0],output]</Script>
+    </PythonNodeModels.PythonNode>
+    <CoreNodeModels.Watch guid="c31e2fd0-9421-44b2-9aba-031518a089b8" type="CoreNodeModels.Watch" nickname="Watch" x="2027.73703798654" y="430.601912820606" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="1cb577f2-d8e4-4f40-9b14-cbc4427daa5d" start_index="0" end="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e25a5df3-e42e-4cca-a8a2-e449c2cb1ba4" start_index="0" end="b17268e0-b488-49bd-bfa3-34b4c28073ab" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b17268e0-b488-49bd-bfa3-34b4c28073ab" start_index="0" end="1cb577f2-d8e4-4f40-9b14-cbc4427daa5d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b2ebf602-87fa-4e0e-b0cf-9878c906b88b" start_index="0" end="1cb577f2-d8e4-4f40-9b14-cbc4427daa5d" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" start_index="0" end="b7553495-d8b3-4ace-b051-043bde5ac5b2" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" start_index="1" end="b7553495-d8b3-4ace-b051-043bde5ac5b2" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" start_index="2" end="b7553495-d8b3-4ace-b051-043bde5ac5b2" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d172e293-65c9-4ca6-82df-bae2e1284dca" start_index="0" end="c31e2fd0-9421-44b2-9aba-031518a089b8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b7553495-d8b3-4ace-b051-043bde5ac5b2" start_index="0" end="d172e293-65c9-4ca6-82df-bae2e1284dca" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="2cce9d76-ce7c-4d6a-b84c-daac975fb9a9" text="DYNAMO SCRIPT PURPOSE&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;This script will download a set of given packages from a excel file from the dynamo website. Then it will extract their contents into a central location.&#xD;&#xA;&#xD;&#xA;It will DELETE any content that matches the details in the excel file." x="73.5689050788532" y="632.994247452859" />
+    <Dynamo.Graph.Notes.NoteModel guid="1e395957-7d64-45ae-8efb-820424a72be9" text="REVIT VERSION&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;N/A" x="73.5689050788532" y="534.833060551916" />
+    <Dynamo.Graph.Notes.NoteModel guid="7fa9d62b-a602-4995-991e-7eb1c7a7591f" text="DYNAMO VERSION&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;1.3.2" x="74.9388603763614" y="338.510686750029" />
+    <Dynamo.Graph.Notes.NoteModel guid="7795c665-41e3-473b-9c55-f8526bed81a4" text="CREATED BY&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;Brendan Cassidy" x="73.5689050788532" y="436.671873650973" />
+    <Dynamo.Graph.Notes.NoteModel guid="245b7484-97a1-40c9-8c12-cfae021d9f56" text="DYNAMO FILE REVISION AND STATUS&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;Revision P01" x="74.9388603763616" y="240.349499849086" />
+    <Dynamo.Graph.Notes.NoteModel guid="ce017db5-9cb1-4fe3-be05-5fe56eefd835" text="DYNAMO FILE NAME&#xD;&#xA;_______________________________________________________&#xD;&#xA;&#xD;&#xA;Automatic Dynamo Package Downloader.dyn" x="74.9388603763614" y="142.188312948143" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="5754216d-fbbb-4c90-a0f1-26e1d1e7043c" annotationText="Input" left="406.619925061894" top="274.498894186475" width="247.019258483352" height="234.147168648158" fontSize="24" InitialTop="313.498894186475" InitialHeight="226.517123945666" TextblockHeight="29" backgrouund="#FFC1D676">
+      <Models ModelGuid="e25a5df3-e42e-4cca-a8a2-e449c2cb1ba4" />
+      <Models ModelGuid="b2ebf602-87fa-4e0e-b0cf-9878c906b88b" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="4d3c9e51-a2ab-4714-8592-fa6c04b371ed" annotationText="Dynamo Script Information" left="63.5689050788532" top="103.188312948143" width="315.369955297508" height="689.805934504716" fontSize="24" InitialTop="142.188312948143" InitialHeight="796.495731001363" TextblockHeight="29" backgrouund="#FF71C6A8">
+      <Models ModelGuid="ce017db5-9cb1-4fe3-be05-5fe56eefd835" />
+      <Models ModelGuid="7fa9d62b-a602-4995-991e-7eb1c7a7591f" />
+      <Models ModelGuid="7795c665-41e3-473b-9c55-f8526bed81a4" />
+      <Models ModelGuid="2cce9d76-ce7c-4d6a-b84c-daac975fb9a9" />
+      <Models ModelGuid="1e395957-7d64-45ae-8efb-820424a72be9" />
+      <Models ModelGuid="245b7484-97a1-40c9-8c12-cfae021d9f56" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="af997254-5c49-4912-90ed-59084b0d0b18" annotationText="Read Excel File" left="670.653822093403" top="274.837379251544" width="878.673066009037" height="338.493066256337" fontSize="24" InitialTop="313.837379251544" InitialHeight="268.292665450948" TextblockHeight="29" backgrouund="#FF48B9FF">
+      <Models ModelGuid="1cb577f2-d8e4-4f40-9b14-cbc4427daa5d" />
+      <Models ModelGuid="b17268e0-b488-49bd-bfa3-34b4c28073ab" />
+      <Models ModelGuid="e5d67fb3-aee8-4a1c-8113-f52a04d8901d" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="74b4e45e-3d7f-4cf0-8345-7a7e42b2ad76" annotationText="" left="1567.55330777037" top="390.814819667678" width="222" height="191" fontSize="30" InitialTop="436.814819667678" InitialHeight="175" TextblockHeight="36" backgrouund="#FF848484">
+      <Models ModelGuid="b7553495-d8b3-4ace-b051-043bde5ac5b2" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="631188a6-acec-41a2-8f6f-e47160d7de6c" annotationText="" left="1805.93487322558" top="388.926120772193" width="180" height="139" fontSize="30" InitialTop="434.926120772193" InitialHeight="123" TextblockHeight="36" backgrouund="#FFD8D8D8">
+      <Models ModelGuid="d172e293-65c9-4ca6-82df-bae2e1284dca" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="8e9d94ee-38ba-4705-a3e8-84e1039f2a3d" annotationText="Output" left="2017.73703798654" top="391.601912820606" width="98" height="133" fontSize="24" InitialTop="430.601912820606" InitialHeight="124" TextblockHeight="29" backgrouund="#FFBB87C6">
+      <Models ModelGuid="c31e2fd0-9421-44b2-9aba-031518a089b8" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
