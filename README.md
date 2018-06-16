@@ -11,6 +11,5 @@ Generally all released dynamo graphs/code have either been posted on twitter(htt
 # Graph Information
 Note: All graph information provided below will be minimul in contents 
 
-[0001-Excel to Revit Sheet Creation](https://github.com/brencass/DynamoGraphs/tree/master/0001-Excel%20to%20Revit%20Sheet%20Creation) -  Currently a placeholder
-
+[0001-Excel to Revit Sheet Creation](https://github.com/brencass/DynamoGraphs/tree/master/0001-Excel%20to%20Revit%20Sheet%20Creation) - Currently holdes version 0.5 of my revit sheet creation script
 [0002-Automatic Dynamo Package Downloader](https://github.com/brencass/DynamoGraphs/tree/master/0002-Automatic%20Dynamo%20Package%20Downloader) 
