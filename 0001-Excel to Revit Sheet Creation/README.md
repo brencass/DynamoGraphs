@@ -3,7 +3,7 @@
 
 ![Image](https://github.com/brencass/DynamoGraphs/blob/master/0001-Excel%20to%20Revit%20Sheet%20Creation/Sheet%20Creation%20Script%20Overview.png?raw=true)
 
-Video: https://autode.sk/2uN1A0S
+Video: To follow...
 
 # Current Limitations or issues
 
