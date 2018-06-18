@@ -9,6 +9,9 @@ Video:
 
 <iframe width="640" height="650" src="https://screencast.autodesk.com/Embed/Timeline/21e6fe2e-cb67-41e8-81d7-2e085b04d145" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
 
+
+[![Watch the video]](https://screencast.autodesk.com/Embed/Timeline/21e6fe2e-cb67-41e8-81d7-2e085b04d145)
+
 # Current Limitations or issues
 
 I am currently not aware of any, though if there is any please submit a issue via github issue tab.
