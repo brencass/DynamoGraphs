@@ -55,7 +55,8 @@ OUT= output</Script>
     </PythonNodeModels.PythonNode>
     <CoreNodeModels.Input.Directory guid="09fbdc70-b38c-4d36-9d7f-f8b7417c0463" type="CoreNodeModels.Input.Directory" nickname="Directory That is To Be Searched" x="-37.8458033918701" y="75.9221409460851" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
       <System.String>C:\temp</System.String>
-      <HintPath>C:\Users\bc42961\Desktop\BDP template Info\New Family Files</HintPath>
+      <HintPath>C:\
+      s</HintPath>
     </CoreNodeModels.Input.Directory>
     <CoreNodeModels.Input.Filename guid="b53f4d0e-be69-41c3-940c-ba561b847cbd" type="CoreNodeModels.Input.Filename" nickname="File Path To Excel File" x="-53.0458033918702" y="-173.569050211738" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
       <System.String>..\..\..\..\..\temp\output.xlsx</System.String>
