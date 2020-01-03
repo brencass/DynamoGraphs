@@ -108,7 +108,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "#FileNaming pattern checker\n#Created By Brendan Cassidy\n\nimport re\n\n#Sheet pattern\n#Python Regular Expressions website: https://pythex.org/\n#Python regular expression info: https://docs.python.org/2.7/howto/regex.html\n#Project Code, Originator and discipline are to be modified accordingly\nNaming_Pattern=IN[1]\n\n#Input\nFilesFromDirectory=IN[0]\n\noutput=[]\n\n\n#Checks if files match pattern\nfor ffd in FilesFromDirectory:\n\tsplitFileName=ffd.split(\"\\\\\")[-1]\n\tTester = re.search(Naming_Pattern , splitFileName)\n\tif not Tester:\n\t\toutput.append([ffd,splitFileName,False])\n\telse:\n\t\toutput.append([ffd,splitFileName,True])\n#Output\nOUT = output",
+      "Code": "#FileNaming pattern checker\n#Created By Brendan Cassidy\n\nimport re\n\n#Sheet pattern\n#Python Regular Expressions website: https://pythex.org/\n#Python regular expression info: https://docs.python.org/2.7/howto/regex.html\n\n#Input\nFilesFromDirectory=IN[0]\nNaming_Pattern=IN[1]\n\noutput=[]\n\n#Checks if files match pattern\nfor ffd in FilesFromDirectory:\n\tsplitFileName=ffd.split(\"\\\\\")[-1]\n\tTester = re.search(Naming_Pattern , splitFileName)\n\tif not Tester:\n\t\toutput.append([ffd,splitFileName,False])\n\telse:\n\t\toutput.append([ffd,splitFileName,True])\n#Output\nOUT = output",
       "VariableInputPorts": true,
       "Id": "c661f92212eb4c8d8a97ccc7cddae9bb",
       "Inputs": [
@@ -234,8 +234,8 @@
         "Title": "Input",
         "Nodes": [
           "81bf1886994b4964b5d64852c588eb2a",
-          "9de2b7fb5de04449905dc1baf09d32e4",
           "5884f1a6ca204161b9fd965b3f1fc31d",
+          "9de2b7fb5de04449905dc1baf09d32e4",
           "78e80eba4abe40dabf118237df0cbc17"
         ],
         "Left": 494.45585596632424,
@@ -244,7 +244,7 @@
         "Height": 404.721077048899,
         "FontSize": 24.0,
         "InitialTop": 510.126993374359,
-        "InitialHeight": 356.606415787092,
+        "InitialHeight": 446.380552560546,
         "TextblockHeight": 29.0,
         "Background": "#FFC1D676"
       },
@@ -260,7 +260,7 @@
         "Height": 132.0,
         "FontSize": 24.0,
         "InitialTop": 508.00443102795,
-        "InitialHeight": 150.263804926392,
+        "InitialHeight": 145.0,
         "TextblockHeight": 29.0,
         "Background": "#FF48B9FF"
       },
@@ -277,7 +277,7 @@
         "Height": 269.92773950174296,
         "FontSize": 24.0,
         "InitialTop": 524.743392891294,
-        "InitialHeight": 404.352692399174,
+        "InitialHeight": 227.92773950174296,
         "TextblockHeight": 58.0,
         "Background": "#FF848484"
       },
@@ -324,8 +324,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -477.00529497548132,
-    "Y": -406.20081828171988,
+    "X": -528.00529497548132,
+    "Y": -471.20081828171988,
     "Zoom": 1.1617783535768034
   }
 }
