@@ -1,0 +1,331 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "File Pattern Checker",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [
+    {
+      "Id": "81bf1886994b4964b5d64852c588eb2a",
+      "Name": "",
+      "Type": "string",
+      "Value": ".\\d{4}.rfa",
+      "Description": "Creates a string."
+    },
+    {
+      "Id": "5884f1a6ca204161b9fd965b3f1fc31d",
+      "Name": "Directory Path",
+      "Type": "string",
+      "Value": "C:\\FilePatternChecker",
+      "Description": "Allows you to select a directory on the system to get its path"
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": ".\\d{4}.rfa",
+      "Id": "81bf1886994b4964b5d64852c588eb2a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "60271e9c592444d3a5a5c5c582389399",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#Created By Brendan Cassidy\n\nimport clr\n\n#Sets up new path to ironpython module Library\nimport sys\nsys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\n\n#Imports operating system interfaces\nimport os\n\n#Import directory\nimport_path=IN[0]\n\n#Get file path for any files that match\noutput=[]\n\nfor root, subdirs, files in os.walk(import_path):\n    for fn in files:\n   \t\tpath=os.path.join(root,fn)\t\t\n\t\toutput.append(path)\nOUT=output\n",
+      "VariableInputPorts": true,
+      "Id": "d547bdbd03b14402940aa6562ce69920",
+      "Inputs": [
+        {
+          "Id": "f0b287a0be214aaca28a403acafd1a0b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b27cc74c3e1a4928827e042ab3b6aaea",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.Directory, CoreNodeModels",
+      "HintPath": "C:\\FilePatternChecker",
+      "InputValue": "C:\\FilePatternChecker",
+      "NodeType": "ExtensionNode",
+      "Id": "5884f1a6ca204161b9fd965b3f1fc31d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "20100bdc49fb4e538f8cb78be47f3196",
+          "Name": "",
+          "Description": "Directory",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows you to select a directory on the system to get its path"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#FileNaming pattern checker\n#Created By Brendan Cassidy\n\nimport re\n\n#Sheet pattern\n#Python Regular Expressions website: https://pythex.org/\n#Python regular expression info: https://docs.python.org/2.7/howto/regex.html\n#Project Code, Originator and discipline are to be modified accordingly\nNaming_Pattern=IN[1]\n\n#Input\nFilesFromDirectory=IN[0]\n\noutput=[]\n\n\n#Checks if files match pattern\nfor ffd in FilesFromDirectory:\n\tsplitFileName=ffd.split(\"\\\\\")[-1]\n\tTester = re.search(Naming_Pattern , splitFileName)\n\tif not Tester:\n\t\toutput.append([ffd,splitFileName,False])\n\telse:\n\t\toutput.append([ffd,splitFileName,True])\n#Output\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "c661f92212eb4c8d8a97ccc7cddae9bb",
+      "Inputs": [
+        {
+          "Id": "36d86d3458dd474ca7aaff52281fd009",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "482a34a766b648209b24461d0a3a50b6",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0e61a2724c0d447190ae43d0256718ef",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "60271e9c592444d3a5a5c5c582389399",
+      "End": "482a34a766b648209b24461d0a3a50b6",
+      "Id": "c529d0bee6684b558dfeac71791ec151"
+    },
+    {
+      "Start": "b27cc74c3e1a4928827e042ab3b6aaea",
+      "End": "36d86d3458dd474ca7aaff52281fd009",
+      "Id": "4befa99218244e469a2109e65a0ff496"
+    },
+    {
+      "Start": "20100bdc49fb4e538f8cb78be47f3196",
+      "End": "f0b287a0be214aaca28a403acafd1a0b",
+      "Id": "248e960aa9814e15b3503078c7d66037"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "",
+        "Id": "81bf1886994b4964b5d64852c588eb2a",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 888.94825171110028,
+        "Y": 807.848070423258
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Get File paths and name",
+        "Id": "d547bdbd03b14402940aa6562ce69920",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1000.17138681981,
+        "Y": 508.00443102795
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Directory Path",
+        "Id": "5884f1a6ca204161b9fd965b3f1fc31d",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 786.54825171110019,
+        "Y": 510.126993374359
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "c661f92212eb4c8d8a97ccc7cddae9bb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1286.2511304925704,
+        "Y": 607.67113239303694
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "c8c78c69203d48d99553d66717741ad2",
+        "Title": "Input",
+        "Nodes": [
+          "81bf1886994b4964b5d64852c588eb2a",
+          "9de2b7fb5de04449905dc1baf09d32e4",
+          "5884f1a6ca204161b9fd965b3f1fc31d",
+          "78e80eba4abe40dabf118237df0cbc17"
+        ],
+        "Left": 494.45585596632424,
+        "Top": 471.126993374359,
+        "Width": 485.49239574477605,
+        "Height": 404.721077048899,
+        "FontSize": 24.0,
+        "InitialTop": 510.126993374359,
+        "InitialHeight": 356.606415787092,
+        "TextblockHeight": 29.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "1d3ab7ab8c0645f598bda0a9a3c16bc5",
+        "Title": "File Checker",
+        "Nodes": [
+          "d547bdbd03b14402940aa6562ce69920"
+        ],
+        "Left": 990.17138681981,
+        "Top": 469.00443102795,
+        "Width": 182.0,
+        "Height": 132.0,
+        "FontSize": 24.0,
+        "InitialTop": 508.00443102795,
+        "InitialHeight": 150.263804926392,
+        "TextblockHeight": 29.0,
+        "Background": "#FF48B9FF"
+      },
+      {
+        "Id": "b21e32ba04fb4ab38def481b1f6167c5",
+        "Title": "Pattern Checker",
+        "Nodes": [
+          "c661f92212eb4c8d8a97ccc7cddae9bb",
+          "f5ec65060a3d4f26b06ec2af4c633f36"
+        ],
+        "Left": 1276.2511304925704,
+        "Top": 456.743392891294,
+        "Width": 144.29274318404146,
+        "Height": 269.92773950174296,
+        "FontSize": 24.0,
+        "InitialTop": 524.743392891294,
+        "InitialHeight": 404.352692399174,
+        "TextblockHeight": 58.0,
+        "Background": "#FF848484"
+      },
+      {
+        "Id": "9de2b7fb5de04449905dc1baf09d32e4",
+        "Title": "Regular Expression Checker",
+        "Nodes": [],
+        "Left": 504.45585596632424,
+        "Top": 816.507545934905,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "78e80eba4abe40dabf118237df0cbc17",
+        "Title": "Directory path where files are stored",
+        "Nodes": [],
+        "Left": 521.88327554893624,
+        "Top": 533.863128439115,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "f5ec65060a3d4f26b06ec2af4c633f36",
+        "Title": "Regular Expression \r\nPython Checker",
+        "Nodes": [],
+        "Left": 1287.5438736766118,
+        "Top": 524.743392891294,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": -477.00529497548132,
+    "Y": -406.20081828171988,
+    "Zoom": 1.1617783535768034
+  }
+}
